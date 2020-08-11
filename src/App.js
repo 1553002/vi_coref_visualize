@@ -67,14 +67,13 @@ const transformToTree = (sentences, clusters) => {
             let newClusters = [];
             Object.keys(clusters).forEach((key, j) => {
                 const cluster = clusters[key];
-
                 if (cluster.length > 0) {
                     // Make sure we're not already in this cluster
                     if (!insideClusters.map((c) => c.cluster).includes(key)) {
                         cluster.every((span, index) => {
                             // Make sure cluster in this sentence
                             if (span[0] === sentence_index && contains(span, i)) {
-                                newClusters.push({end: span[2], cluster: key, clusterIndex: j});
+                                newClusters.push({end: span[2], cluster: key, clusterIndex: j, span_content: span});
                                 return false
                             }
                             return true
@@ -93,7 +92,8 @@ const transformToTree = (sentences, clusters) => {
                         cluster: newCluster.cluster,
                         contents: [],
                         end: newCluster.end,
-                        clusterIndex: newCluster.clusterIndex
+                        clusterIndex: newCluster.clusterIndex,
+                        clusterRange: newCluster.span_content,
                     }
                 );
             });
@@ -171,7 +171,7 @@ const InnerHighlight = props => {
                     // isClickable={isClickable}
                     // isClicking={isClicking}
                     key={idx}
-                    label={token.cluster}
+                    label={token.clusterRange}
                     labelPosition={labelPosition}
                     // onMouseDown={onMouseDown}
                     // onMouseOut={onMouseOut}

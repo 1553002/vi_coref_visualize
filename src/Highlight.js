@@ -50,6 +50,7 @@ export const Highlight = props => {
     secondaryLabel, // string
     tooltip         // string
   } = props;
+  console.log(label)
 
   const deepestIndex = activeDepths ? activeDepths.depths.indexOf(Math.max(...activeDepths.depths)) : null;
   const conditionalClasses = getHighlightConditionalClasses({
@@ -66,9 +67,11 @@ export const Highlight = props => {
     children,
   });
 
+  const label_array = id + ' | ' + label.map((lat) => `${lat}`).join(', ');
+
   const labelTemplate = (
     <span className="highlight__label">
-      <strong>{label}</strong>
+      <strong>{label_array}</strong>
       {secondaryLabel ? (
         <span className="highlight__label__secondary-label">{secondaryLabel}</span>
       ) : null}
