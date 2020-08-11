@@ -239,11 +239,15 @@ const NestedHighlight = props => {
 }
 
 
-const toHTML = ({sentences, mention_clusters}) => {
+const toHTML = ({id, sentences, mention_clusters}) => {
     const data = transformToTree(sentences, mention_clusters)
-    return <NestedHighlight treeData={data}
+    return <div>
+        <div><span>id: </span>{id}</div>
+        <NestedHighlight treeData={data}
                             labelPosition='left'
-    />
+        />
+    </div>
+
 }
 
 

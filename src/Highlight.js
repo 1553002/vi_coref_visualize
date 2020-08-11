@@ -67,10 +67,11 @@ export const Highlight = props => {
     children,
   });
 
-  const label_array = id + ' | ' + label.map((lat) => `${lat}`).join(', ');
+  // const label_array = id + ' | ' + label.map((lat) => `${lat}`).join(', ');
+  const label_array = '[' + label.map((lat) => `${lat}`).join(', ') + ']';
 
   const labelTemplate = (
-    <span className="highlight__label">
+    <span className="highlight__label" onClick={()=>navigator.clipboard.writeText(label_array)}>
       <strong>{label_array}</strong>
       {secondaryLabel ? (
         <span className="highlight__label__secondary-label">{secondaryLabel}</span>
