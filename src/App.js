@@ -244,7 +244,7 @@ const toHTML = ({id, sentences, mention_clusters}) => {
     return <div>
         <div><span>id: </span>{id}</div>
         <NestedHighlight treeData={data}
-                            labelPosition='left'
+                         labelPosition='left'
         />
     </div>
 
@@ -282,6 +282,8 @@ class CusPagination extends React.Component {
         this.pageNeighbours = typeof pageNeighbours === 'number'
             ? Math.max(0, Math.min(pageNeighbours, 2))
             : 0;
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     fetchPageNumber = () => {
@@ -372,22 +374,41 @@ class CusPagination extends React.Component {
         this.gotoPage(this.state.currentPage + (this.pageNeighbours * 2) + 1);
     }
 
+    handleSubmit = evt => {
+        evt.preventDefault()
+        this.gotoPage(this.state.currentPage)
+    }
+
+    handleChange(event) {
+        event.preventDefault()
+        this.setState({currentPage: event.target.value});
+    }
+
     render() {
         const page = this.fetchPageNumber();
 
         return (
             <Fragment>
+
                 <Pagination>
                     {
                         page.map((page, index) => {
                             if (page === LEFT_PAGE) return <Pagination.Prev key={index} onClick={this.handleMoveLeft}/>
-                            if (page === RIGHT_PAGE) return <Pagination.Next key={index} onClick={this.handleMoveRight}/>
+                            if (page === RIGHT_PAGE) return <Pagination.Next key={index}
+                                                                             onClick={this.handleMoveRight}/>
                             return <Pagination.Item key={index}
                                                     onClick={this.handleClick(page)}>{page}</Pagination.Item>
                         })
 
                     }
                 </Pagination>
+                <form onSubmit={this.handleSubmit}>
+                    <label>
+                        Goto:
+                        <input type="text" value={this.state.currentPage} onChange={this.handleChange}/>
+                    </label>
+                    <input type="submit" value="Go"/>
+                </form>
             </Fragment>
         )
     }
